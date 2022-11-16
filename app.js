@@ -2,9 +2,13 @@ const express = require("express");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const layout = require("./views/layout");
-const { db } = require("./models");
+const path = require("path");
 
 const { db, Page, User } = require("./models");
+const {
+  ModelBuildPage,
+} = require("twilio/lib/rest/autopilot/v1/assistant/modelBuild");
+const PORT = 3000;
 
 const app = express();
 app.use(express.static(__dirname + "/public"));
@@ -21,11 +25,11 @@ db.authenticate().then(() => {
 });
 
 const init = async () => {
-  await Page.sync;
+  await Page.sync();
+  await User.sync();
+
+  // make sure that you have a PORT constant
 };
 
-const PORT = 3000;
-
-app.listen(PORT, () => {
-  console.log(`App listening in port ${PORT}`);
-});
+module.exports = app;
+init();
